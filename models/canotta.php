@@ -20,6 +20,43 @@ class Canotta{
   }
 
   function create(){
+    $query = "INSERT INTO "
+              . $this->table_name .
+              "
+              SET
+                giocatore=:giocatore, 
+                squadra=:squadra, 
+                numero=:numero, 
+                tipo=:tipo, 
+                anno=:anno, 
+                prezzo_originale=:prezzo_originale, 
+                percentuale_sconto=:percentuale_sconto";
+
+     //Query creata, ora tocca prepararla
+     $stmt = $this->conn->prepare($query);
+
+     //Sanitizzazione
+      $this->giocatore = htmlspecialchars(strip_tags($this->giocatore));
+      $this->squadra = htmlspecialchars(strip_tags($this->squadra));
+      $this->numero = htmlspecialchars(strip_tags($this->numero));
+      $this->tipo = htmlspecialchars(strip_tags($this->tipo));
+      $this->anno = htmlspecialchars(strip_tags($this->anno));
+      $this->prezzo_originale = htmlspecialchars(strip_tags($this->prezzo_originale));
+      $this->percentuale_sconto = htmlspecialchars(strip_tags($this->percentuale_sconto));
+
+      // Binding dei parametri
+      $stmt->bindParam(":giocatore", $this->giocatore);
+      $stmt->bindParam(":squadra", $this->squadra);
+      $stmt->bindParam(":numero", $this->numero);
+      $stmt->bindParam(":tipo", $this->tipo);
+      $stmt->bindParam(":anno", $this->anno);
+      $stmt->bindParam(":prezzo_originale", $this->prezzo_originale);
+      $stmt->bindParam(":percentuale_sconto", $this->percentuale_sconto);
+        
+      if($stmt->execute()){
+          return true;
+      }
+      return false;
 
   }
 
