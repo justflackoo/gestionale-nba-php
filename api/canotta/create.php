@@ -31,8 +31,10 @@ if(
         !empty($data->numero) &&
         !empty($data->tipo) &&
         !empty($data->anno) &&
-        !empty($data->prezzo_originale) &&
-        !empty($data->percentuale_sconto)
+
+        //isset() per i numeri che potrebbero essere 0
+        isset($data->prezzo_originale) &&
+        isset($data->percentuale_sconto)
 ){
         
         $canotta->giocatore = $data->giocatore;
@@ -50,6 +52,10 @@ if(
                 http_response_code(503);//Entro in questo blocco se non sono riuscito a creare la canotta  
                 echo json_encode(array("message" => "Non è stato possibile creare la canotta."));//E lo comunico all'utente :(
         }
+}else {
+        //Se l'utente non ha inserito tutti i dati entriamo in questo else
+        http_response_code(400); 
+        echo json_encode(array("message" => "Dati incompleti. Impossibile creare la canotta."));
 }
 
 ?>
