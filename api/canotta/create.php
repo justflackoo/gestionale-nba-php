@@ -5,7 +5,7 @@ header("Access-Control-Allow-Method: POST");
 header("Access-Control-Max-Age: 3600");
 
 //Specifico gli header di richiesta consentiti
-header("Access-Control-Allow-Header: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type");
 
 
 include_once '../../config/database.php';
