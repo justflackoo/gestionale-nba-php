@@ -77,7 +77,7 @@ class Tabella_Taglie{
    
     $stmt = $this->conn->prepare($query);
 
-    // 3. Sanitizzazione
+    //Sanitizzazione
     $this->id_taglia = htmlspecialchars(strip_tags($this->id_taglia));
 
     //Binding dell' ID
