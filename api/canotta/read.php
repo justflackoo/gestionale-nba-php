@@ -53,18 +53,16 @@ if($num > 0){
       array_push($canotta_arr["records"], $canotta_item);
   }
 
-  http_response_code(200);
+    http_response_code(200);
 
     //JSON_PRETTY_PRINT permette di visualizzare in maniera più pulita
-  echo json_encode($canotta_arr, JSON_PRETTY_PRINT);
+    echo json_encode($canotta_arr, JSON_PRETTY_PRINT);
 
   // L'else viene eseguito se il database è vuoto o non ci sono risultati
 }else{
     http_response_code(404);
 
-    echo json_encode(
-      array("message" => "Nessuna canotta trovata.")
-    );
+    echo json_encode(array("message" => "Nessuna canotta trovata."));
 }
 
 
