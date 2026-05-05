@@ -25,8 +25,8 @@ if(
         !empty($data->numero) &&
         !empty($data->tipo) &&
         !empty($data->anno) &&
-        !empty($data->prezzo_originale) &&
-        !empty($data->percentuale_sconto)
+        isset($data->prezzo_originale) &&
+        isset($data->percentuale_sconto)
 ){
 
         $canotta->id_canotta = $data->id_canotta; 
