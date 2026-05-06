@@ -68,7 +68,39 @@ class Magazzino{
     
     }
 
-  function update(){}
+  function update(){
+
+    $query = "UPDATE " .$this->table_name . " 
+              SET
+              id_canotta =:id_canotta,
+              id_taglia =:id_taglia,
+              quantita_disponibile =:quantita_disponibile
+              WHERE
+              id_giacenza =:id_giacenza";
+
+    $stmt = $this->conn->prepare($query);
+
+    $this->id_giacenza = htmlspecialchars(strip_tags($this->id_giacenza));
+    $this->id_canotta = htmlspecialchars(strip_tags($this->id_canotta));
+    $this->id_taglia = htmlspecialchars(strip_tags($this->id_taglia));
+    $this->quantita_disponibile = htmlspecialchars(strip_tags($this->quantita_disponibile));
+
+    $stmt->bindParam(":id_giacenza", $this->id_giacenza);
+    $stmt->bindParam(":id_canotta", $this->id_canotta);
+    $stmt->bindParam(":id_taglia", $this->id_taglia);
+    $stmt->bindParam(":quantita_disponibile", $this->quantita_disponibile);
+
+    if ($stmt->execute()) {
+        //Se ha trovato una corrispondenza restituisco TRUE
+    if ($stmt->rowCount() > 0) {
+        return true;
+    }
+    // Se rowCount è 0 = non ci sono corrispondenze oppure i dati sono identici
+    return false;
+    }
+   
+
+  }
 
   function delete(){}
 
