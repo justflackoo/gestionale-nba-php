@@ -102,7 +102,27 @@ class Magazzino{
 
   }
 
-  function delete(){}
+  function delete(){
+
+    $query = "DELETE FROM " .$this->table_name. " WHERE id_giacenza = :id_giacenza";
+
+    $stmt = $this->conn->prepare($query);
+
+    $this->id_giacenza = htmlspecialchars(strip_tags($this->id_giacenza)); //Pulisco per sicurezza
+
+    $stmt->bindParam(":id_giacenza", $this->id_giacenza);
+
+        if ($stmt->execute()) {
+          //Se ha trovato una corrispondenza restituisco TRUE
+              if ($stmt->rowCount() > 0) {
+                  return true;
+              }
+              // Se rowCount è 0 = non ci sono corrispondenze oppure i dati sono identici
+              return false;
+
+          }
+
+  }
 
 
 }
