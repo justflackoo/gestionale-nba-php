@@ -55,10 +55,61 @@ class Utente{
 
   }
 
-  function read(){}
+  function login(){
 
-  function update(){}
+  //Verifichiamo se l'email che sta passando l'utente esiste nel mio DB
+  $query = "SELECT 
+            id_utente,
+            nome,
+            cognome,
+            email,
+            password,
+            ruolo
+            FROM ".$this->table_name."
+            WHERE email=:email
+            LIMIT 0,1";
+  
+  //Preparo la query
+  $stmt=$this->conn->prepare($query);
 
-  function delete(){}
+  // Sanitizzazione e Binding dell'email per questioni di sicurezza
+    $this->email = htmlspecialchars(strip_tags($this->email));
+    $stmt->bindParam(":email", $this->email);
+
+  // Eseguiamo la query
+    $stmt->execute();
+    $num = $stmt->rowCount();
+
+  //A questo punto parte il primo controllo: se num > 0 significa che effettivamente c'è una corrispondenza nel DB 
+      if($num > 0){
+
+        //La riga esiste, la estraggo dal database
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        /*Grazie al fetch(PDO::FETCH_ASSOC), $row non è una semplice variabile bensì un array associativo:
+         Trasforma la riga del database in un array dove le etichette (chiavi) corrispondono ai nomi delle colonne, ad esempio:
+
+          $row['id_utente'] conterrà il valore della colonna id_utente
+          ...
+          $row['password'] conterrà il valore della colonna password, ad esempio "$2y$10$vnUVLU...." */
+
+          
+        
+        if(password_verify($this->password, $row['password'])) {//password_verify confronta la password in chiaro inviata dall'utente con l'hash salvato nel DB
+                  
+                  // 4. Se la sfida ha successo, popoliamo l'oggetto con i dati reali del DB
+                  // Questo "identifica" ufficialmente l'oggetto Utente attuale
+                  $this->id_utente = $row['id_utente'];
+                  $this->nome = $row['nome'];
+                  $this->cognome = $row['cognome'];
+                  $this->ruolo = $row['ruolo'];
+
+                  return true;
+              } 
+
+      }
+        // Se num non è > 0 l'email non esiste, restituisco false
+        return false;}
+  
 }
 ?>
