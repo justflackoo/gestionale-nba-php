@@ -117,6 +117,36 @@ function read(){
     return $stmt;
 
 }
+
+function readOne(){
+
+$query = "SELECT id_utente, nome, cognome, email, ruolo FROM ".$this->table_name." WHERE id_utente = ? LIMIT 0,1";
+
+$stmt = $this->conn->prepare($query);
+
+//Sanitizzazione: necessaria per evitare SQL Injection o caratteri indesiderati
+$this->id_utente = htmlspecialchars(strip_tags($this->id_utente)); 
+
+//Binding del parametro posizionale. Il "1" si riferisce al primo (e unico) "?" nella query
+ $stmt->bindParam(1, $this->id_utente);
+
+$stmt->execute();
+
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Se row non è false significa che è stato trovato l'utente nel DB, passo con il popolare l'oggetto attuale
+if($row) {
+            $this->nome = $row['nome'];
+            $this->cognome = $row['cognome'];
+            $this->email = $row['email'];
+            $this->ruolo = $row['ruolo'];
+            
+            return true; //Esito positivo
+         }
+
+        
+        return false;// Se non trovo nulla restituisco false
+    }
   
 }
 ?>

@@ -4,7 +4,6 @@ header("Content-Type: application/json; charset=UTF-8");  //L'API accetta e rest
 header("Access-Control-Allow-Methods: GET"); 
 header("Access-Control-Max-Age: 3600"); //Per quanti secondi il browser può memorizzare questa autorizzazione
 
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once '../../config/database.php';
 include_once '../../models/utente.php';
