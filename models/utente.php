@@ -147,6 +147,40 @@ if($row) {
         
         return false;// Se non trovo nulla restituisco false
     }
+
+
+function update(){
+
+      $query = "UPDATE " .$this->table_name . "
+                SET 
+                nome =:nome,
+                cognome =:cognome,
+                email =:email,
+                ruolo =:ruolo
+                WHERE id_utente =:id_utente";
+
+      $stmt = $this->conn->prepare($query);
+
+      //Sanitizzazione per prevenire SQL Injection
+      $this->nome=htmlspecialchars(strip_tags($this->nome));
+      $this->cognome = htmlspecialchars(strip_tags($this->cognome));
+      $this->email = htmlspecialchars(strip_tags($this->email));
+      $this->ruolo = htmlspecialchars(strip_tags($this->ruolo));
+      $this->id_utente = htmlspecialchars(strip_tags($this->id_utente));
+
+      // Binding dei dati
+      $stmt->bindParam(':nome', $this->nome);
+      $stmt->bindParam(':cognome', $this->cognome);
+      $stmt->bindParam(':email', $this->email);
+      $stmt->bindParam(':ruolo', $this->ruolo);
+      $stmt->bindParam(':id_utente', $this->id_utente);
+
+      // Esecuzione
+      if($stmt->execute()) {
+          return true;
+      }
+      return false;
+}
   
 }
 ?>
