@@ -55,19 +55,12 @@ class Utente{
 
   }
 
-  function login(){
-
+  function login(){ 
   //Verifichiamo se l'email che sta passando l'utente esiste nel mio DB
-  $query = "SELECT 
-            id_utente,
-            nome,
-            cognome,
-            email,
-            password,
-            ruolo
-            FROM ".$this->table_name."
-            WHERE email=:email
-            LIMIT 0,1";
+      $query = "SELECT id_utente, nome, cognome, email, password, ruolo
+                FROM ".$this->table_name."
+                WHERE email=:email
+                LIMIT 0,1";
   
   //Preparo la query
   $stmt=$this->conn->prepare($query);
@@ -95,21 +88,35 @@ class Utente{
 
           
         
-        if(password_verify($this->password, $row['password'])) {//password_verify confronta la password in chiaro inviata dall'utente con l'hash salvato nel DB
-                  
-                  // 4. Se la sfida ha successo, popoliamo l'oggetto con i dati reali del DB
-                  // Questo "identifica" ufficialmente l'oggetto Utente attuale
-                  $this->id_utente = $row['id_utente'];
-                  $this->nome = $row['nome'];
-                  $this->cognome = $row['cognome'];
-                  $this->ruolo = $row['ruolo'];
+                if(password_verify($this->password, $row['password'])) {//password_verify confronta la password in chiaro inviata dall'utente con l'hash salvato nel DB
+                          
+                          // 4. Se la sfida ha successo, popoliamo l'oggetto con i dati reali del DB
+                          // Questo "identifica" ufficialmente l'oggetto Utente attuale
+                          $this->id_utente = $row['id_utente'];
+                          $this->nome = $row['nome'];
+                          $this->cognome = $row['cognome'];
+                          $this->ruolo = $row['ruolo'];
 
-                  return true;
-              } 
+                          return true;
+                      } 
 
-      }
+                  }
         // Se num non è > 0 l'email non esiste, restituisco false
-        return false;}
+        return false;
+}
+
+//Questa funzione consente di avere le informazioni su tutti gli utenti presenti nel DB
+function read(){
+
+    $query = "SELECT id_utente, nome, cognome, email, ruolo FROM " . $this->table_name . " ORDER BY id_utente ASC";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->execute();
+
+    return $stmt;
+
+}
   
 }
 ?>
