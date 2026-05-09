@@ -181,6 +181,26 @@ function update(){
       }
       return false;
 }
+
+//Per aggiornare la password verrà implementato in futuro un metodo ad-hoc
+
+function delete(){
+  $query = "DELETE FROM " . $this->table_name." WHERE id_utente =:id_utente";
+  
+  $stmt = $this->conn->prepare($query);
+
+  
+    //Sanitizzazione
+    $this->id_utente = htmlspecialchars(strip_tags($this->id_utente));
+
+    //Binding dell' ID
+    $stmt->bindParam(":id_utente", $this->id_utente);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+}
   
 }
 ?>

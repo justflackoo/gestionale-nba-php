@@ -138,7 +138,7 @@ class Canotta{
    
     $stmt = $this->conn->prepare($query);
 
-    // 3. Sanitizzazione
+    // Sanitizzazione
     $this->id_canotta = htmlspecialchars(strip_tags($this->id_canotta));
 
     //Binding dell' ID
