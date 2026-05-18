@@ -41,6 +41,23 @@ class Fattura{
 
       
   }
+
+  function read(){
+    $query = "SELECT u.nome, u.cognome, f.id_fattura, f.id_cliente ,f.data_acquisto, f.totale 
+              FROM ".$this->table_name. " AS f 
+              INNER JOIN utente u 
+              ON f.id_cliente = u.id_utente
+              ORDER BY f.data_acquisto DESC";
+
+    //Preparo la query
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->execute();
+
+    return $stmt;
+
+  }
+
 }
 
 ?>
